@@ -10,5 +10,18 @@ const getNotes: RequestHandler = async (req, res, next) => {
 	}
 };
 
+const createNote: RequestHandler = async (req, res, next) => {
+	const { title, text } = req.body;
 
-export { getNotes };
+	try {
+		const newNote = await NoteModel.create({
+			title,
+			text,
+		});
+		res.status(201).json(newNote);
+	} catch(error) {
+		next(error);
+	}
+};
+
+export { getNotes, createNote };
