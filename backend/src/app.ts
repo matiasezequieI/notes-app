@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import endPointNotFound from './middlewares/endpointNotFound';
-import internalServerError from './middlewares/internalServerError';
+import errorHandler from './middlewares/errorHandler';
 import notesRoutes from './routes/notes';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -15,7 +15,7 @@ app.use(cors());
 app.use('/api/notes', notesRoutes);
 
 app.use(endPointNotFound);
-app.use(internalServerError);
+app.use(errorHandler);
 
 
 export default app;

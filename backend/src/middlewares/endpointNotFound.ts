@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
+import createHttpError from 'http-errors';
 
 const endPointNotFound = (req: Request, res: Response, next: NextFunction) => {
-	res.status(404).json({message: 'Endpoint not found.'});
-	next();
+	next(createHttpError(404, 'Endpoint not found'));
 };
 
 export default endPointNotFound;
