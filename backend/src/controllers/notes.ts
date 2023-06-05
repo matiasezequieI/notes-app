@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import NoteModel from '../models/note';
 import CreateNoteBody from '../interface/CreateNoteBody';
 import createHttpError from 'http-errors';
+import mongoose from 'mongoose';
 
 const getNotes: RequestHandler = async (req, res, next) => {
 	try {
@@ -9,13 +10,22 @@ const getNotes: RequestHandler = async (req, res, next) => {
 		res.status(200).json(notes);
 	} catch(error){
 		next(error);
-	}
+	}	
 };
 
 const getNote: RequestHandler = async (req, res, next) => {
 	const { id } = req.params;
 	try {
+		if (!mongoose.isValidObjectId(id)) {
+			throw createHttpError(400, 'Invalid note ID format');
+		}
+
 		const note = await NoteModel.findById(id).exec();
+
+		if (!note) {
+			throw createHttpError(404, 'Note not found');
+		}
+
 		res.status(200).json(note);
 	} catch(error) {
 		next(error);
