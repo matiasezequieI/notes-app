@@ -1,6 +1,8 @@
 import { RequestHandler } from 'express';
 import NoteModel from '../models/note';
 import CreateNoteBody from '../interface/CreateNoteBody';
+import UpdateNoteBody from '../interface/UpdateNoteBody';
+import UpdateNoteParams from '../interface/UpdateNoteParams';
 import createHttpError from 'http-errors';
 import mongoose from 'mongoose';
 
@@ -8,7 +10,7 @@ const getNotes: RequestHandler = async (req, res, next) => {
 	try {
 		const notes = await NoteModel.find().exec();
 		res.status(200).json(notes);
-	} catch(error){
+	} catch (error){
 		next(error);
 	}	
 };
@@ -27,7 +29,7 @@ const getNote: RequestHandler = async (req, res, next) => {
 		}
 
 		res.status(200).json(note);
-	} catch(error) {
+	} catch (error) {
 		next(error);
 	}
 };
@@ -45,9 +47,39 @@ const createNote: RequestHandler<unknown, unknown, CreateNoteBody, unknown> = as
 			text,
 		});
 		res.status(201).json(newNote);
-	} catch(error) {
+	} catch (error) {
 		next(error);
 	}
 };
 
-export { getNotes, createNote, getNote };
+const updateNote: RequestHandler<UpdateNoteParams, unknown, UpdateNoteBody, unknown> = async (req, res, next) => {
+	const { id } = req.params;
+	const { title, text } = req.body;
+
+	try {
+		if (!mongoose.isValidObjectId(id)) {
+			throw createHttpError(400, 'Invalid note ID format');
+		}
+
+		if (!title) {
+			throw createHttpError(400, 'Note must have a title');
+		}
+		
+		const note = await NoteModel.findById(id).exec();
+
+		if (!note) {
+			throw createHttpError(404, 'Note not found');
+		}
+
+		note.title = title;
+		note.text = text;
+
+		const updatedNote = await note.save();
+
+		res.status(200).json(updatedNote);
+	} catch (error) {
+		next(error);
+	}
+};
+
+export { getNotes, createNote, getNote, updateNote };
