@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import './App.css';
 import { Note } from './models/note';
 
@@ -8,7 +8,7 @@ function App() {
 	useEffect(() => {
 		const loadNotes = async () => { 
 			try {
-				const response = await fetch('http://localhost:3001/api/notes', { method: 'GET' });
+				const response = await fetch('/api/notes', { method: 'GET' });
 				const notes = await response.json();
 				setNotes(notes);
 			} catch (error) {
