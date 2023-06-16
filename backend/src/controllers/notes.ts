@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express';
 import NoteModel from '../models/note';
-import CreateNoteBody from '../interface/CreateNoteBody';
-import UpdateNoteBody from '../interface/UpdateNoteBody';
-import UpdateNoteParams from '../interface/UpdateNoteParams';
+import CreateNoteBody from '../interfaces/CreateNoteBody';
+import UpdateNoteBody from '../interfaces/UpdateNoteBody';
+import UpdateNoteParams from '../interfaces/UpdateNoteParams';
 import createHttpError from 'http-errors';
 import mongoose from 'mongoose';
 
