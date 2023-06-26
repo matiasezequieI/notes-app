@@ -1,8 +1,9 @@
 import { Note } from '../models/note';
 
-interface AddNoteDialogProps {
+interface AddEditNoteDialogProps {
+  noteToEdit?: Note,
   onDismiss: () => void,
   onNoteSaved: (note: Note) => void, 
 }
 
-export default AddNoteDialogProps;
+export default AddEditNoteDialogProps;

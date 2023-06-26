@@ -22,7 +22,19 @@ export const createNote = async (note: NoteInput): Promise<Note> => {
 		{
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(note),
+		});
+	return response.json();
+};
+
+export const updateNote = async(id:string, note: NoteInput) => {
+	const response = await fetchData(`/api/notes/${id}`, 
+		{ 
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(note),
 		});
@@ -32,3 +44,4 @@ export const createNote = async (note: NoteInput): Promise<Note> => {
 export const deleteNote = async (id: string) => {
 	await fetchData(`/api/notes/${id}`, { method: 'DELETE'});
 };
+
