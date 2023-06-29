@@ -18,7 +18,6 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
 	} catch (error) {
 		next(error);
 	}
-
 };
 
 export const signUp: RequestHandler<unknown, unknown, SignUpBody, unknown> = async (req, res, next) => {
