@@ -10,3 +10,7 @@
   justify-content: space-between;
   gap: 4px;
 }
+
+.width100 {
+  width: 100%;
+}
