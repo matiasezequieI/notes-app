@@ -9,6 +9,7 @@ import styleUtils from './styles/utils.module.css';
 import { FaPlus } from 'react-icons/fa';
 import SignUpModal from './components/SignUpModal';
 import LoginModal from './components/LoginModal';
+import NavBar from './components/NavBar';
 
 
 function App() {
@@ -59,17 +60,24 @@ function App() {
 	</Row>;
 
 	return (
-		<Container className={styles.notesPage}>
-			<Button
-				className={`mb-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
-				onClick={() => setShowAddNoteDialog(true)}>
-				<FaPlus />
+		<div>
+			<NavBar 
+				loggedInUser={null}
+				onLoginClicked={() =>{}}
+				onLoginSuccessful={() => {}}
+				onSignUpClicked={() => {}}
+			/>
+			<Container className={styles.notesPage}>
+				<Button
+					className={`mb-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
+					onClick={() => setShowAddNoteDialog(true)}>
+					<FaPlus />
 				Adicionar nota
-			</Button>
+				</Button>
 
-			{notesLoading && <Spinner animation='border' variant='primary' />}
-			{showError && <p>Erro ao tentar carregar as notas. Por favor, recarregue a página.</p> }
-			{!notesLoading && !showError && 
+				{notesLoading && <Spinner animation='border' variant='primary' />}
+				{showError && <p>Erro ao tentar carregar as notas. Por favor, recarregue a página.</p> }
+				{!notesLoading && !showError && 
 				<>
 					{
 						notes.length > 0
@@ -77,9 +85,9 @@ function App() {
 							: <p>Você não possui nenhuma nota no momento.</p>
 					}
 				</>
-			}
+				}
 
-			{showAddNoteDialog && 
+				{showAddNoteDialog && 
 			<AddEditNoteDialog 
 				onDismiss={() => setShowAddNoteDialog(false)}
 				onNoteSaved={(newNote) => {
@@ -87,8 +95,8 @@ function App() {
 					setShowAddNoteDialog(false);
 				}}
 			/>}
-			{
-				noteToEdit &&
+				{
+					noteToEdit &&
 				<AddEditNoteDialog
 					noteToEdit={noteToEdit}
 					onDismiss={() => setNoteToEdit(null)}
@@ -97,22 +105,23 @@ function App() {
 						setNoteToEdit(null);
 					}}
 				/>
-			}
-			{false && 
+				}
+				{false && 
 				<SignUpModal 
 					onDismiss={() => console.log()}
 					onSignUpSuccessful={() => console.log()} 
 				/>
-			}
+				}
 
-			{
-				false &&
+				{
+					false &&
 				<LoginModal
 					onDismiss={() => console.log()}
 					onLoginSuccessful={() => console.log()} 
 				/>
-			}
-		</Container>
+				}
+			</Container>
+		</div>
 	);
 }
 
