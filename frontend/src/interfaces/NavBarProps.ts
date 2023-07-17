@@ -4,8 +4,7 @@ interface NavBarProps {
   loggedInUser: User | null,
   onSignUpClicked: () => void,
   onLoginClicked: () => void,
-  onLoginSuccessful: () => void,
-
+  onLogoutSuccessful: () => void,
 }
 
 export default NavBarProps;
