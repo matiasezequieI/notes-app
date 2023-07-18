@@ -15,7 +15,7 @@ const fetchData = async (input: RequestInfo, init?: RequestInit) => {
 	}
 };
 
-export const getLogedInUser = async (): Promise<User> => {
+export const getLoggedInUser = async (): Promise<User> => {
 	const response = await fetchData('/api/users', { method: 'GET' });
 	return response.json();
 };
