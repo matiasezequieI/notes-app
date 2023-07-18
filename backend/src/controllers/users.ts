@@ -3,7 +3,7 @@ import SignUpBody from '../interfaces/SignUpBody';
 import createHttpError from 'http-errors';
 import UserModel from '../models/user';
 import bcrypt from 'bcrypt';
-import LoginBody from '../interface/LoginBody';
+import LoginBody from '../interfaces/LoginBody';
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
 	const authenticatedUserId = req.session.userId;

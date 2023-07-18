@@ -12,7 +12,6 @@ import styles from './styles/NotesPage.module.css';
 function App() {
 
 	const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
-
 	const [showSignUpModal, setShowSignUpModal] = useState(false);
 	const [showLoginModal, setShowLoginModal] = useState(false);
 
