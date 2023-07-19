@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import LoginModal from './components/LoginModal';
 import NavBar from './components/NavBar';
-import NotesPageLoggedInView from './components/NotesPageLoggedInView';
-import NotesPageLoggedOutView from './components/NotesPageLoggedOutView';
 import SignUpModal from './components/SignUpModal';
 import { User } from './models/user';
 import * as NotesApi from './network/notes_api';
-import styles from './styles/NotesPage.module.css';
+import styles from './styles/App.module.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import NotesPage from './pages/NotesPage';
+import PrivacyPage from './pages/PrivacyPage';
+import NotFound from './pages/NotFound';
 
 function App() {
 
@@ -28,22 +30,33 @@ function App() {
 	}, []);
 
 	return (
-		<div>
-			<NavBar
-				loggedInUser={loggedInUser}
-				onLoginClicked={() => setShowLoginModal(true)}
-				onSignUpClicked={() => setShowSignUpModal(true)}
-				onLogoutSuccessful={() => setLoggedInUser(null)}
-			/>
-			<Container className={styles.notesPage}>
-				<>
-					{loggedInUser
-						? <NotesPageLoggedInView />
-						: <NotesPageLoggedOutView />
-					}
-				</>
-			</Container>
-			{showSignUpModal &&
+		<BrowserRouter>
+			<div>
+				<NavBar
+					loggedInUser={loggedInUser}
+					onLoginClicked={() => setShowLoginModal(true)}
+					onSignUpClicked={() => setShowSignUpModal(true)}
+					onLogoutSuccessful={() => setLoggedInUser(null)}
+				/>
+
+				<Container className={styles.pageContainer}>
+					<Routes>
+						<Route 
+							path='/'
+							element={<NotesPage loggedInUser={loggedInUser} />}
+						/>
+						<Route 
+							path='/privacy'
+							element={<PrivacyPage />}
+						/>
+						<Route 
+							path='/*'
+							element={<NotFound />}
+						/>
+					</Routes>
+				</Container>
+
+				{showSignUpModal &&
 				<SignUpModal
 					onDismiss={() => setShowSignUpModal(false)}
 					onSignUpSuccessful={(user) => {
@@ -51,8 +64,9 @@ function App() {
 						setShowSignUpModal(false);
 					}}
 				/>
-			}
-			{showLoginModal &&
+				}
+
+				{showLoginModal &&
 				<LoginModal
 					onDismiss={() => setShowLoginModal(false)}
 					onLoginSuccessful={(user) => {
@@ -60,8 +74,9 @@ function App() {
 						setShowLoginModal(false);
 					}}
 				/>
-			}
-		</div>
+				}
+			</div>
+		</BrowserRouter>
 	);
 }
 
