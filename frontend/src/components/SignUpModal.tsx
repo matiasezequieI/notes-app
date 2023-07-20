@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SignUpModalProps } from '../interfaces/SignUpModalProps';
 import { useForm } from 'react-hook-form';
 import { SignUpCredentials } from '../interfaces/SignUpCredentials';
 import * as NotesApi from '../network/notes_api';
-import { Button, Form, Modal } from 'react-bootstrap';
+import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import TextInputField from './form/TextInputField';
 import styleUtils from '../styles/utils.module.css';
+import { ConflictError } from '../errors/HttpErrors';
 
 const SignUpModal = ({ onDismiss, onSignUpSuccessful}: SignUpModalProps) => {
 	const { register, handleSubmit, formState: {errors, isSubmitting } } = useForm<SignUpCredentials>();
+	const [errorText, setErrorText] = useState<string | null>(null);
+
 
 	const onSubmit = async (credentials: SignUpCredentials) => {
 		try {
 			const newUser = await NotesApi.signUp(credentials);
 			onSignUpSuccessful(newUser);
 		} catch (error) {
-			alert(error);
+			if(error instanceof ConflictError) {
+				setErrorText(error.message);
+			} else {
+				alert(error);
+			}
 			console.error(error);
 		}
 	};
@@ -56,6 +63,13 @@ const SignUpModal = ({ onDismiss, onSignUpSuccessful}: SignUpModalProps) => {
 						registerOptions={{ required: 'Required' }}
 						error={errors.password}
 					/>
+
+					{
+						errorText && 
+						<Alert variant='danger'>
+							{errorText }
+						</Alert>
+					}
 					<Button type='submit' disabled={isSubmitting} className={styleUtils.width100}>
             Sign Up
 					</Button>
